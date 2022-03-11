@@ -10,7 +10,6 @@ class Particle{
 
 public:
     Particle();
-    ~Particle();
     Particle(const Particle & p);
     Particle(Eigen::Vector3d position, Eigen::Vector3d velocity);
     Eigen::Vector3d getPosition();
