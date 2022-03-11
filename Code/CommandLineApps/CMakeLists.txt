@@ -13,7 +13,7 @@
 #============================================================================*/
 
 set(_command_line_apps
-  nbsimMyFirstApp
+  #nbsimMyFirstApp
 )
 
 foreach(_app ${_command_line_apps})

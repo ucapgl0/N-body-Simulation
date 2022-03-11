@@ -15,12 +15,13 @@
 set(PHAS0100ASSIGNMENT2_LIBRARY_NAME phas0100assignment2)
 
 set(PHAS0100ASSIGNMENT2_LIBRARY_SRCS
-  nbsimBasicTypes.cpp
-  nbsimMyFunctions.cpp
-  nbsimException.cpp
+  nbsimParticle.cpp
+#  nbsimMassiveParticle.cpp
 )
 
 set(PHAS0100ASSIGNMENT2_LIBRARY_HDRS
+  #nbsimParticle.h
+  # nbsimMassiveParticle.h
   nbsimExceptionMacro.h
   nbsimSolarSystemData.ipp
 )
