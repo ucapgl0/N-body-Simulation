@@ -8,6 +8,7 @@ namespace nbsim{
 class MassiveParticle{
 
 public:
+    MassiveParticle();
     MassiveParticle(const MassiveParticle & m);
     void getMu();
     void addAttractor();
