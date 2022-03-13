@@ -1,8 +1,15 @@
 #include "nbsimMassiveParticle.h"
+#include "nbsimParticle.h"
 #include <iostream>
 #include <Eigen/Dense>
 
 namespace nbsim{
+    // MassiveParticle::MassiveParticle(const MassiveParticle &m){
+    //     Velocity = m.Velocity;
+    //     Position = m.Position;
+    //     mass = m.mass;
+    //     acceleration = m.acceleration;
+    // }
 
     MassiveParticle::MassiveParticle(Eigen::Vector3d pos, Eigen::Vector3d vel, double m):Particle(pos,vel){
         mass = m;    

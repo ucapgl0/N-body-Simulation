@@ -42,32 +42,34 @@ TEST_CASE("Particle status","[Position Velocity]"){
     REQUIRE(v3.isApprox(Eigen::Vector3d (0,1,0), 0.01));
 }
 
-TEST_CASE("MassiveParticle Status", "[Attractor mass]"){
+TEST_CASE("MassiveParticle Status","[Attractor mass]"){
   // Unit test for massive particle moving by the number of attractors
   // No attractor
-  nbsim::MassiveParticle MassiveParticle1(Eigen::Vector3d (1,2,1), Eigen::Vector3d (1,1,1), 1);
+  //nbsim::MassiveParticle MassiveParticle1(Eigen::Vector3d (0,1,0), Eigen::Vector3d (0,1,0), 1.5);
+  std::shared_ptr<nbsim::MassiveParticle> MassiveParticle1(new nbsim::MassiveParticle(Eigen::Vector3d (1,2,1),Eigen::Vector3d (1,1,1),1));
   double timestep = 0.001;
-  for(double t=0; t<1; t += timestep){
-    MassiveParticle1.integrateTimestep(timestep);
+  for(double t=0; t<1; t+=timestep){
+    MassiveParticle1->integrateTimestep(timestep);
   }
-  Eigen::Vector3d p4 = MassiveParticle1.getPosition();
-  Eigen::Vector3d v4 = MassiveParticle1.getVelocity();
+  Eigen::Vector3d p4 = MassiveParticle1->getPosition();
+  Eigen::Vector3d v4 = MassiveParticle1->getVelocity();
   REQUIRE(p4.isApprox(Eigen::Vector3d (2,3,2), 0.01));
   REQUIRE(v4.isApprox(Eigen::Vector3d (1,1,1), 0.01));
-
+  
+  
   // One attractor
-  // double mass = 1/(6.67e-11);
-  // Eigen::Vector3d p5(1,0,0), v5(0,0.5,0), p6(-1,0,0), v6(0,-0.5,0);  
-  // std::shared_ptr<nbsim::MassiveParticle> Mp1(new nbsim::MassiveParticle(p5,v5,mass)), Mp2(new nbsim::MassiveParticle(p6,v6,mass));
-  // Mp1->addAttractor(Mp2);
-  // Mp2->addAttractor(Mp1);
-  // for(double t=0;t<5;t+=timestep){
-  //       Mp1->calculateAcceleration();
-  //       Mp1->integrateTimestep(timestep);
-  //       Mp2->calculateAcceleration();
-  //       Mp2->integrateTimestep(timestep);
-  //   }
-  //   double distance=(Mp1->getPosition()-Mp2->getPosition()).norm();
-  //   REQUIRE(std::abs(distance-2) < 0.01);
+  double mass = 1/(6.67e-11);
+  Eigen::Vector3d p5(1,0,0), v5(0,0.5,0), p6(-1,0,0), v6(0,-0.5,0);  
+  std::shared_ptr<nbsim::MassiveParticle> Mp1(new nbsim::MassiveParticle(p5,v5,mass)), Mp2(new nbsim::MassiveParticle(p6,v6,mass));
+  Mp1->addAttractor(Mp2);
+  Mp2->addAttractor(Mp1);
+  for(double t=0;t<5;t+=timestep){
+        Mp1->calculateAcceleration();
+        Mp1->integrateTimestep(timestep);
+        Mp2->calculateAcceleration();
+        Mp2->integrateTimestep(timestep);
+    }
+    double distance=(Mp1->getPosition()-Mp2->getPosition()).norm();
+    REQUIRE(std::abs(distance-2) < 0.01);
 
 }

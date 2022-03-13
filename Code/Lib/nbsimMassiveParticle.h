@@ -12,6 +12,7 @@ class MassiveParticle : public Particle{
 
 public:
     MassiveParticle();
+    //MassiveParticle(const MassiveParticle & m);
     MassiveParticle(Eigen::Vector3d pos, Eigen::Vector3d vel, double m);
     double getMu();
     void addAttractor(std::shared_ptr<MassiveParticle> attractor);
