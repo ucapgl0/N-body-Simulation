@@ -1,25 +1,28 @@
 #ifndef MassiveParticle_h
 #define MassiveParticle_h
+#include "nbsimParticle.h"
 #include <iostream>
 #include <Eigen/Dense>
+#include <set>
+#include <memory>
 
 namespace nbsim{
 
-class MassiveParticle{
+class MassiveParticle : public Particle{
 
 public:
     MassiveParticle();
-    MassiveParticle(const MassiveParticle & m);
-    void getMu();
-    void addAttractor();
-    void removeAttractor();
+    MassiveParticle(Eigen::Vector3d pos, Eigen::Vector3d vel, double m);
+    double getMu();
+    void addAttractor(std::shared_ptr<MassiveParticle> attractor);
+    void removeAttractor(std::shared_ptr<MassiveParticle> attractor);
     void calculateAcceleration();
     void integrateTimestep(double timestep);
 
 private:
+    double mass;
     Eigen::Vector3d acceleration;
-    Eigen::Vector3d position;
-    Eigen::Vector3d velocity;
+    std::set<std::shared_ptr<MassiveParticle>> attractors;
 };
 }
 #endif

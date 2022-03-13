@@ -16,7 +16,7 @@ public:
     Eigen::Vector3d getVelocity();
     void integrateTimestep(Eigen::Vector3d acceleration, double timestep);
     
-private:
+protected:
     Eigen::Vector3d Position;
     Eigen::Vector3d Velocity;
 
