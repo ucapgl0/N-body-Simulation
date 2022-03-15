@@ -109,7 +109,7 @@ int main(int argc, char* argv[]) {
     std::clock_t c1_end = std::clock();
     auto t1_end = std::chrono::high_resolution_clock::now();
 
-/*
+
     //benchmark 2000 plants system simulation
     std::clock_t c2_start = std::clock();
     auto t2_start = std::chrono::high_resolution_clock::now();
@@ -155,7 +155,7 @@ int main(int argc, char* argv[]) {
         k2_end += 0.5 * PlanetSystem[i].getMu() * final_velocity.dot(final_velocity);
         Eigen::Vector3d ini_position = PlanetSystem[i].getPosition();
         Eigen::Vector3d final_position = system_ptr[i]->getPosition();
-        for (int j=0; j<n;j++){
+        for (int j=0; j < n;j++){
             if(i!=j){
                 Eigen::Vector3d ini_position_attractor = PlanetSystem[j].getPosition();
                 Eigen::Vector3d final_position_attractor = system_ptr[j]->getPosition();
@@ -165,10 +165,13 @@ int main(int argc, char* argv[]) {
         }
     }
 
+    total2_begin = k2_begin + p2_begin;
+    total2_end = k2_end + p2_end;
+
     std::clock_t c2_end = std::clock();
     auto t2_end = std::chrono::high_resolution_clock::now();
 
-*/
+
     // Summarising the position of the solar system bodies at the start and end of the simulation
     std::cout<<"Summarising the position of the solar system bodies at the start and end of the simulation: "<<std::endl;
     for (int i=0;i<9;i++){
@@ -190,9 +193,9 @@ int main(int argc, char* argv[]) {
 
     // Output the runtime of code
     std::cout << std::fixed << std::setprecision(2) << "CPU time used: "
-              << 1000.0 * (c1_end - c1_start) / CLOCKS_PER_SEC << " ms\n"
+              << 1000.0 * (c2_end - c2_start) / CLOCKS_PER_SEC << " ms\n"
               << "Wall clock time passed: "
-              << std::chrono::duration<double, std::milli>(t1_end-t1_start).count()
+              << std::chrono::duration<double, std::milli>(t2_end-t2_start).count()
               << " ms\n";
 
 }
