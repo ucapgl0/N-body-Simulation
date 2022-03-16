@@ -359,6 +359,26 @@ Wall clock time passed: 41523.24 ms
 ```
 It takes 41seconds runtime approximately, so the performance improved is significant after parallelice simulation.
 
+**Set OMP_NUM_THREADS = 2 to Parallelise simulation:**
+
+```bash
+./bin/solarSystemSimulator -s 0.00137 -t 17
+
+CPU time used: 143490.98 ms
+Wall clock time passed: 73183.09 ms
+```
+It takes 1minute 13seconds runtime approximately.
+
+**Set OMP_NUM_THREADS = 4 to Parallelise simulation:**
+
+```bash
+./bin/solarSystemSimulator -s 0.00137 -t 17
+
+CPU time used: 155216.52 ms
+Wall clock time passed: 39894.02 ms
+```
+It takes 39seconds runtime approximately.
+
 **Set OMP_NUM_THREADS = 8 to Parallelise simulation:**
 
 ```bash
@@ -368,3 +388,13 @@ CPU time used: 144226.06 ms
 Wall clock time passed: 38547.19 ms
 ```
 It takes 38seconds runtime approximately.
+
+**Set OMP_NUM_THREADS = 16 to Parallelise simulation:**
+
+```bash
+./bin/solarSystemSimulator -s 0.00137 -t 17
+
+CPU time used: 184942.35 ms
+Wall clock time passed: 53744.18 ms
+```
+It takes 53seconds runtime approximately.
