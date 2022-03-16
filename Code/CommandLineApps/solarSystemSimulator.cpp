@@ -11,6 +11,7 @@
 #include <ctime>
 #include <vector>
 #include <math.h>
+#include <random>
 
 double Gravitational_constant = 6.67e-11;
 
@@ -22,8 +23,8 @@ std::vector<nbsim::MassiveParticle> generator(int n){
     system.push_back(central_plant);
 
     // Generate remaining particles
-    for (int i=1;i<n;i++){
-        srand(time(0));
+    srand(time(0));
+    for (int i=1;i<n;i++){        
         // Control 0.4 < radius < 40 and 0 < theta < 2*Pi and mu < 0.03
         double radius = 0.4 + 39.6*(rand() / double(RAND_MAX));
         double theta = 2*M_PI*(rand() / double(RAND_MAX));
@@ -121,11 +122,10 @@ int main(int argc, char* argv[]) {
 
     omp_set_num_threads(8);
 
-    #pragma omp parallel for
+    
     for (int i=0; i < n; i++){
         system_ptr[i] = std::make_shared<nbsim::MassiveParticle>(PlanetSystem[i].getPosition(), PlanetSystem[i].getVelocity(), PlanetSystem[i].getMu()/Gravitational_constant);
     }
-
 
     // For each MassiveParticle, add all other MassiveParticle bodies to their list of attractors
     //#pragma omp parallel
