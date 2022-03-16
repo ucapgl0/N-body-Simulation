@@ -165,6 +165,7 @@ int main(int argc, char* argv[]) {
         k2_end += 0.5 * PlanetSystem[i].getMu() * final_velocity.dot(final_velocity);
         Eigen::Vector3d ini_position = PlanetSystem[i].getPosition();
         Eigen::Vector3d final_position = system_ptr[i]->getPosition();
+        #pragma omp parallel for
         for (int j=0; j < n;j++){
             if(i!=j){
                 Eigen::Vector3d ini_position_attractor = PlanetSystem[j].getPosition();
