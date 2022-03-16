@@ -119,7 +119,7 @@ int main(int argc, char* argv[]) {
     std::shared_ptr<nbsim::MassiveParticle> system_ptr[n];
     std::vector<nbsim::MassiveParticle> PlanetSystem = generator(n);
 
-    omp_set_num_threads(2);
+    omp_set_num_threads(8);
 
     #pragma omp parallel for
     for (int i=0; i < n; i++){
