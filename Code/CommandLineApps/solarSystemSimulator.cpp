@@ -115,17 +115,23 @@ int main(int argc, char* argv[]) {
     auto t2_start = std::chrono::high_resolution_clock::now();
 
     int n = 2000;
+
     std::shared_ptr<nbsim::MassiveParticle> system_ptr[n];
     std::vector<nbsim::MassiveParticle> PlanetSystem = generator(n);
 
-    for (int i=0; i<n; i++){
+    omp_set_num_threads(2);
+
+    #pragma omp parallel for
+    for (int i=0; i < n; i++){
         system_ptr[i] = std::make_shared<nbsim::MassiveParticle>(PlanetSystem[i].getPosition(), PlanetSystem[i].getVelocity(), PlanetSystem[i].getMu()/Gravitational_constant);
     }
 
+
     // For each MassiveParticle, add all other MassiveParticle bodies to their list of attractors
+    //#pragma omp parallel
 	for (int i=0; i < n; i++) {
 
-		for (int j=0; j<n; j++) {
+		for (int j=0; j < n; j++) {
 
 			if (i != j) {
 
@@ -135,19 +141,23 @@ int main(int argc, char* argv[]) {
 	}
     
     // Implement the evolution of the 2000 plants-system with time
-    for (double time=0; time<time_length; time+=step_size){
+    #pragma omp parallel
+    for (double time=0; time < time_length; time+=step_size){
             
+        #pragma omp for     
 		for (int i=0;i<n;i++){
 			system_ptr[i]->calculateAcceleration();
 		}
         
+        #pragma omp for 
 		for (int i=0;i<n;i++){
 			system_ptr[i]->integrateTimestep(step_size);
 		}	
 	}
 
-    // Calculate the kinetic, potential and total energy at the beginning and end of the simulation for 2000 plants-system
+    // Calculate the kinetic, potential and total energy at the beginning and end of the simulation for 2000 plants-system  
     double k2_begin=0, k2_end=0, p2_begin=0, p2_end=0, total2_begin, total2_end;
+    #pragma omp parallel for
     for (int i=0; i < n; i++){
         Eigen::Vector3d ini_velocity = PlanetSystem[i].getVelocity();
         Eigen::Vector3d final_velocity = system_ptr[i]->getVelocity();
