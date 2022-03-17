@@ -68,7 +68,7 @@ int main(int argc, char* argv[]) {
     // For each MassiveParticle, add all other MassiveParticle bodies to their list of attractors
 	for (int i=0; i <9; i++) {
 		for (int j=0; j<9; j++) {
-
+            // Avoid adding attractor to self
 			if (i != j) {
 
                 planet_ptr[i]->addAttractor(planet_ptr[j]);
@@ -132,7 +132,7 @@ int main(int argc, char* argv[]) {
 	for (int i=0; i < n; i++) {
 
 		for (int j=0; j < n; j++) {
-
+            // Avoid adding attractor to self
 			if (i != j) {
 
                 system_ptr[i]->addAttractor(system_ptr[j]);
