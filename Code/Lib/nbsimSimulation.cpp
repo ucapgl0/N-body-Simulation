@@ -106,9 +106,8 @@ namespace nbsim{
 
     void Simulation::printEnergy() const
     {
-        std::cout << "Energy: "
-                  << "\nkinetic energy: " << E_k << ", "
-                  << "potential energy: " << E_p << ", "
+        std::cout << "\nkinetic energy: " << E_k << "\n"
+                  << "potential energy: " << E_p << "\n"
                   << "total energy: " << E_tol << std::endl;
     }
 
@@ -152,8 +151,10 @@ namespace nbsim{
         for (int i = 0; i < 9; ++i)
         {
             std::cout << nbsim::solarSystemData[i].name << ": "
-                      << particle_list[i]->getPosition() << std::endl;
-                      
+                      << '(' << particle_list[i]->getPosition()[0] << ','
+                      << particle_list[i]->getPosition()[1] << ','
+                      << particle_list[i]->getPosition()[2] << ')'
+                      << std::endl;             
         }
     }
 

@@ -2,7 +2,6 @@
 #include "../Lib/nbsimParticle.h"
 #include "../Lib/nbsimMassiveParticle.h"
 #include "../Lib/nbsimSimulation.h"
-#include "../Lib/nbsimSolarSystemData.ipp"
 #include "../3rdParty/CLI11.hpp"
 #include <memory>
 #include <chrono>
@@ -14,7 +13,7 @@
 #include <math.h>
 #include <random>
 
-double Gravitational_constant = 6.67e-11;
+//double Gravitational_constant = 6.67e-11;
 
 // std::vector<nbsim::MassiveParticle> generator(int n){
 //     std::vector<nbsim::MassiveParticle> system;
@@ -61,12 +60,11 @@ int main(int argc, char* argv[]) {
     // This function is implemented without OpenMP
     solar_system.calculateEnergy();
 
-    std::cout << "\nOriganal Position: \n"
-                << std::endl;
+    std::cout << "\nOriginal Position: \n"<< std::endl;               
     solar_system.printPosition();
     std::cout << "---------------------------------------------------------------\n"
                 << std::endl;
-    std::cout << "\nOriganal Energy: \n"
+    std::cout << "\nOriginal Energy: \n"
                 << std::endl;          
     solar_system.printEnergy();
     std::cout << "-----------------------------------------------------------------" << std::endl;
@@ -81,12 +79,12 @@ int main(int argc, char* argv[]) {
     solar_system.evolution(time_length, step_size);
 
     solar_system.calculateEnergy();
-    
+
     std::clock_t c1_end = std::clock();
     auto t1_end = std::chrono::high_resolution_clock::now();
 
 //#ifdef DEBUG
-    std::cout << "\nFinal Position: \n"
+    std::cout << "\nCurrent Position: \n"
                 << std::endl;
     solar_system.printPosition();
     std::cout << "---------------------------------------------------------------\n"
