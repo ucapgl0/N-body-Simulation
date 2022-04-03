@@ -23,10 +23,10 @@ namespace nbsim
         Simulation(std::vector<std::shared_ptr<MassiveParticle>> _particlelist);
         ~Simulation();
         virtual void generator()=0;
-        void attract();
-        void calculateEnergy();
+        void attraction();
         void evolution(double time_length, double time_step);
-        std::vector<std::shared_ptr<MassiveParticle>> getParticlelist() const;
+        void calculateEnergy();        
+        std::vector<std::shared_ptr<MassiveParticle>> getParticle_list() const;
         double getEk() const;
         double getEp() const;
         double getEtol() const;
@@ -34,29 +34,26 @@ namespace nbsim
         void validationTime(double time_length, double time_step);
     };
 
-    // By subclassing the class Simulation, the new class can implement different generators to initialise the particlas.
 
-    // In this SolarSystemsimulation subclass, the initial condition of particles comes from real Solar System
-    // The list of particles would be generatred by reading a file.
-    class SolarSystemsimulation : public Simulation
+    // SolarSystemsimulation subclass, the initial condition of particles comes from real Solar System generatred by reading a file.
+    class SolarSystem : public Simulation
     {
     public:
-        SolarSystemsimulation();
-        ~SolarSystemsimulation();
+        SolarSystem();
+        ~SolarSystem();
         virtual void generator();
         void printPosition() const;
     };
 
-    // In this RandomSystemsimulation subclass, the particles would be produced randomly
-    // Given the amount of the particles, the generator would produce particles in random initial conditions
-    class RandomSystemsimulation : public Simulation
+    // RandomSystemsimulation subclass, the particles would be produced randomly
+    class RandomSystem : public Simulation
     {
     private:
     int particle_number;
     public:
-        RandomSystemsimulation();
-        RandomSystemsimulation(int particle_number);
-        ~RandomSystemsimulation();
+        RandomSystem();
+        RandomSystem(int particle_number);
+        ~RandomSystem();
         virtual void generator();
         void calculateEnergy_Openmp(int thread_number);
         void evolution_Openmp(double time_length, double time_step, int thread_number);
