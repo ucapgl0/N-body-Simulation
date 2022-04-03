@@ -1,6 +1,7 @@
 #include <iostream>
 #include "../Lib/nbsimParticle.h"
 #include "../Lib/nbsimMassiveParticle.h"
+#include "../Lib/nbsimSimulation.h"
 #include "../Lib/nbsimSolarSystemData.ipp"
 #include "../3rdParty/CLI11.hpp"
 #include <memory>
