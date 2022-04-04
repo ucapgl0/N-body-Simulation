@@ -22,6 +22,7 @@ int main(int argc, char* argv[]) {
     app.add_option("-s,--TimeStep", step_size,  "input the step size(the time of each step)");
     app.add_option("-t,--LengthOfTime", time_length,  "input the total time of simulation");
     app.add_option("-n,--SetNumThreads", threads, "input the number of threads");
+    CLI11_PARSE(app, argc, argv);
     //benchmark 2000 plants system simulation  
 
     int n = 2000;
@@ -30,6 +31,7 @@ int main(int argc, char* argv[]) {
 
     // Calculate the initial kinetic energy and potential energy
     random_system.calculateEnergy_Openmp(threads);
+
 
     std::clock_t c_start = std::clock();
     auto t_start = std::chrono::high_resolution_clock::now();
@@ -40,8 +42,8 @@ int main(int argc, char* argv[]) {
     random_system.evolution_Openmp(time_length, step_size, threads);
 
     random_system.calculateEnergy_Openmp(threads);
-
     
+   
     // std::shared_ptr<nbsim::MassiveParticle> system_ptr[n];
     // std::vector<nbsim::MassiveParticle> PlanetSystem = generator(n);
 

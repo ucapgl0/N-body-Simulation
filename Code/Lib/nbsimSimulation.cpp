@@ -37,8 +37,8 @@ namespace nbsim{
 
     void Simulation::attraction(){
         // For each MassiveParticle, add all other MassiveParticle bodies to their list of attractors
-	    for (int i=0; i <9; i++) {
-		    for (int j=0; j<9; j++) {
+	    for (int i=0; i <particle_list.size(); i++) {
+		    for (int j=0; j<particle_list.size(); j++) {
                 // Avoid adding attractor to self
 			    if (i != j) {
 
@@ -50,8 +50,8 @@ namespace nbsim{
 
     //  Implement the evolution of the system with time
     void Simulation::evolution(double time_length, double step_size){
-        std::cout << "time_length: " << time_length << "\n" << "step_size: " << step_size << std::endl;
         validationTime(time_length, step_size);
+        std::cout << particle_list.size() << std::endl;
         //  Implement the evolution of the solar system with time
         for (double time=0; time<time_length; time+=step_size){
             
@@ -119,19 +119,6 @@ namespace nbsim{
     {
         particle_list.clear();
         // Initialise all the instances of Solar System bodies from the file
-        
-        // double mu;
-        // Eigen::Vector3d pos, vel;
-        // for (auto body : solarSystemData)
-        // {
-        //     mu = body.mu;
-        //     pos = body.position;
-        //     vel = body.velocity;
-
-        //     std::shared_ptr<nbsim::MassiveParticle> ptr_body(new nbsim::MassiveParticle(pos, vel, mu));
-        //     particle_list.push_back(ptr_body);
-        // }
-
         // create a set of MassiveParticle‘s corresponding to the major bodies
         Eigen::Vector3d position, velocity;
         double mass;
@@ -186,14 +173,12 @@ namespace nbsim{
             std::shared_ptr<nbsim::MassiveParticle> plant(new nbsim::MassiveParticle(Eigen::Vector3d (r_x,r_y,0),Eigen::Vector3d (v_x,v_y,0),mass));           
             particle_list.push_back(plant);
         }
-
         
     }
 
     //  Implement the evolution of the system with time
     void RandomSystem::evolution_Openmp(double time_length, double step_size, int thread_number){
         
-        std::cout << "time_length: " << time_length << "\n" << "step_size: " << step_size << std::endl;
         validationTime(time_length, step_size);
 
         for (double time=0; time<time_length; time+=step_size){
