@@ -9,6 +9,7 @@
 #include <random>
 #include <omp.h>
 #include <math.h>
+#include <ctime>
 
 double Gravitational_constant = 6.67e-11;
 
@@ -19,11 +20,11 @@ namespace nbsim{
         {
             throw std::runtime_error(" User should input positive time step size ");
         }
-        else if (time_length < 0)
+        if (time_length < 0)
         {
             throw std::runtime_error(" User should input length of simulation time  which is greater or equal to 0 ");
         }
-        else if (step_size > time_length)
+        if (step_size > time_length)
         {
             throw std::runtime_error(" The time step size should be smaller or equal to the length of time");
         }
@@ -49,6 +50,7 @@ namespace nbsim{
 
     //  Implement the evolution of the system with time
     void Simulation::evolution(double time_length, double step_size){
+        std::cout << "time_length: " << time_length << "\n" << "step_size: " << step_size << std::endl;
         validationTime(time_length, step_size);
         //  Implement the evolution of the solar system with time
         for (double time=0; time<time_length; time+=step_size){
@@ -76,8 +78,8 @@ namespace nbsim{
             {
                 if (i != j)
                 {
-                    Eigen::Vector3d r = particle_list[i]->getPosition() - particle_list[j]->getPosition();
-                    E_p += -0.5 * particle_list[i]->getMu() * particle_list[j]->getMu() / r.norm();
+                    Eigen::Vector3d d = particle_list[i]->getPosition() - particle_list[j]->getPosition();
+                    E_p += -0.5 * particle_list[i]->getMu() * particle_list[j]->getMu() / d.norm();
                 }
             }
         }
@@ -133,7 +135,7 @@ namespace nbsim{
         // create a set of MassiveParticle‘s corresponding to the major bodies
         Eigen::Vector3d position, velocity;
         double mass;
-        for (int ibody=0; ibody <9; ibody++) {			    
+        for (int ibody=0; ibody < 9; ibody++) {			    
 		    mass = nbsim::solarSystemData[ibody].mu / Gravitational_constant;
 		    position = nbsim::solarSystemData[ibody].position;
 		    velocity = nbsim::solarSystemData[ibody].velocity;
@@ -148,7 +150,7 @@ namespace nbsim{
     // Print the position of the solar system bodies at the start and end of the simulation
     void SolarSystem::printPosition() const
     {
-        for (int i = 0; i < 9; ++i)
+        for (int i = 0; i < 9; i++)
         {
             std::cout << nbsim::solarSystemData[i].name << ": "
                       << '(' << particle_list[i]->getPosition()[0] << ','
@@ -159,6 +161,8 @@ namespace nbsim{
     }
 
     RandomSystem::RandomSystem(){};
+
+    RandomSystem::~RandomSystem(){};
 
     RandomSystem::RandomSystem(int particle_num) : particle_number(particle_num){};
 
@@ -182,12 +186,16 @@ namespace nbsim{
             std::shared_ptr<nbsim::MassiveParticle> plant(new nbsim::MassiveParticle(Eigen::Vector3d (r_x,r_y,0),Eigen::Vector3d (v_x,v_y,0),mass));           
             particle_list.push_back(plant);
         }
+
         
     }
 
     //  Implement the evolution of the system with time
     void RandomSystem::evolution_Openmp(double time_length, double step_size, int thread_number){
+        
+        std::cout << "time_length: " << time_length << "\n" << "step_size: " << step_size << std::endl;
         validationTime(time_length, step_size);
+
         for (double time=0; time<time_length; time+=step_size){
             // Parallel the for loop using OpenMP
             omp_set_num_threads(thread_number);
@@ -227,13 +235,15 @@ namespace nbsim{
             {
                 if (i != j)
                 {
-                    Eigen::Vector3d r = particle_list[i]->getPosition() - particle_list[j]->getPosition();
-                    E_p += -0.5 * particle_list[i]->getMu() * particle_list[j]->getMu() / r.norm();
+                    Eigen::Vector3d d = particle_list[i]->getPosition() - particle_list[j]->getPosition();
+                    E_p += -0.5 * particle_list[i]->getMu() * particle_list[j]->getMu() / d.norm();
                 }
             }
         }
         E_tol = E_k + E_p;
     }
+
+ 
 
 }
     

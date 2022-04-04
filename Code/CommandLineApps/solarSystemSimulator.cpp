@@ -56,8 +56,7 @@ int main(int argc, char* argv[]) {
     nbsim::SolarSystem solar_system;
     solar_system.generator();
 
-    // Calculate the kinetic energy and potential energy
-    // This function is implemented without OpenMP
+    // Calculate the initial kinetic energy and potential energy
     solar_system.calculateEnergy();
 
     std::cout << "\nOriginal Position: \n"<< std::endl;               
