@@ -47,7 +47,14 @@ Use instruction
 ---
 ### **Command-line app**
 
-There is a command line app in this project which is solarSystemSimulator.
+There are two command line app in this project which are solarSystemSimulator and randomSystemSimulator.
+
+### *Solar System Simulator*
+
+This is an app to simulate solar system in real world to evolve system and calulate the system energy by specific time length and step-size.
+
+The app will output the positions of plants in solar-system and the Kinetic energy, potential energy, total energy of plant system at the beginning and end of simulation, and the time of code running.
+
 
 User could input comands below from the build directory to check the help information:
 
@@ -71,7 +78,33 @@ This is an example for  timestep of 0.000274 years (this is~0.1 days) and then r
 ./bin/solarSystemSimulator -s 0.000274 -t 1
 ```
 
-The app will output the positions of plants in solar-system and the Kinetic energy, potential energy, total energy of plant system at the beginning and end of simulation, and the time of code running.
+### *Random system simulator*
+
+This is an app to simulate a random 2000-planet system to evolve system and calulate the system energy by specific time length and step-size.
+
+OpenMP is used to parallelise the simulation in order to improve its performance in this app.
+
+User could input comands below from the build directory to check the help information:
+
+```Bash
+./bin/randomSystemSimulator -h
+```
+or
+```Bash
+./bin/randomSystemSimulator --help
+```
+
+And user could input the step-size (the time of each step) and the time(total time of simulation) and the number of thread to simulate the plants system. This is the instruction:
+
+```Bash
+./bin/randomSystemSimulator -s <step-size, unit:year> -t <time, unit:year> -n <number of thread>
+```
+
+This is an example for  timestep of 0.00137 years (this is~0.5 days) and then run the program for 1 year of simulated time and set 8threads:
+
+```Bash
+./bin/randomSystemSimulator -s 0.00137 -t 1 -n 8
+```
 
 ### **Unit Tests**
 Users can input the command below to run the file "unit_test.cpp" to test.
@@ -338,63 +371,29 @@ Hence, I choose the timestep size $5*10^{-7}$  as the good value of timestep to 
 
 I choose timestep size 0.00137 year(~0.5days) and total time 1 year to 2000-planet-system.
 
-**Before using OpenMP to Parallelise simulation:**
 
-```bash
-./bin/solarSystemSimulator -s 0.00137 -t 1
+**Benchmark using OpenMP to Parallelise simulation:**
 
-CPU time used: 156996.29 ms
-Wall clock time passed: 157303.18 ms
-```
+|**Number of thread**|**CPU time**|**Wall clock time**|
+| :----: | :----: | :----: |
+|Without OpenMP| 108276 ms |108295 ms|
+|2| 121665 ms |61986 ms|
+|3|136681 ms |48832 ms|
+|4|175326 ms |45654 ms|
+|5|148711 ms |45282 ms|
+|6|158723 ms |48433 ms|
+|7|171935 ms|49765 ms|
+|8|170123 ms |49389 ms|
 
-It takes 2minutes 37seconds runtime approximately. 
 
-**After using OpenMP to Parallelise simulation:**
+Wall clock time measures how much time has passed while CPU time is how long the CPU is busy. With OpenMP, Wall clock time is smaller than CPU time which shows that the simulation has been executed in parallel. 
 
-```bash
-./bin/solarSystemSimulator -s 0.00137 -t 1
+In conclusion, without OpenMp, CPU time is almost the same as Wall clock time. CPU time is almost the product of number of threads and Wall clock time when number of threads is less and equal to 4. In addition, before the number of threads reaching the number of cores on the machine(4 in my machine), Wall clock time decrease as increasing number of threads. 
 
-CPU time used: 159400.62 ms
-Wall clock time passed: 41523.24 ms
-```
-It takes 41seconds runtime approximately, so the performance improved is significant after parallelice simulation.
+Therefore, using OpenMP to parallelise the relevant parts can improve the performance of the simulation. However, the CPU time grow up as the number of threads increase.
 
-**Set OMP_NUM_THREADS = 2 to Parallelise simulation:**
+However, after the number of threads reaching the number of cores on the machine, the increasing number of threads lead to increasing Wall clock time and decreasing CPU time. Therefore, when number of threads exceed the the number of cores, more threads can not help improve the performance and could even produce a negative effect.
 
-```bash
-./bin/solarSystemSimulator -s 0.00137 -t 17
 
-CPU time used: 143490.98 ms
-Wall clock time passed: 73183.09 ms
-```
-It takes 1minute 13seconds runtime approximately.
 
-**Set OMP_NUM_THREADS = 4 to Parallelise simulation:**
 
-```bash
-./bin/solarSystemSimulator -s 0.00137 -t 17
-
-CPU time used: 155216.52 ms
-Wall clock time passed: 39894.02 ms
-```
-It takes 39seconds runtime approximately.
-
-**Set OMP_NUM_THREADS = 8 to Parallelise simulation:**
-
-```bash
-./bin/solarSystemSimulator -s 0.00137 -t 17
-
-CPU time used: 144226.06 ms
-Wall clock time passed: 38547.19 ms
-```
-It takes 38seconds runtime approximately.
-
-**Set OMP_NUM_THREADS = 16 to Parallelise simulation:**
-
-```bash
-./bin/solarSystemSimulator -s 0.00137 -t 17
-
-CPU time used: 184942.35 ms
-Wall clock time passed: 53744.18 ms
-```
-It takes 53seconds runtime approximately.
