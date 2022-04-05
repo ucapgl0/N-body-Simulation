@@ -29,6 +29,7 @@ int main(int argc, char* argv[]) {
     // Calculate the initial kinetic energy and potential energy
     solar_system.calculateEnergy();
 
+    // Output the original position and energy
     std::cout << "\nOriginal Position: \n"<< std::endl;               
     solar_system.printPosition();
     std::cout << "---------------------------------------------------------------\n"
@@ -51,6 +52,7 @@ int main(int argc, char* argv[]) {
     std::clock_t c1_end = std::clock();
     auto t1_end = std::chrono::high_resolution_clock::now();
 
+    // Output the final position and energy
     std::cout << "\nCurrent Position: \n"
                 << std::endl;
     solar_system.printPosition();

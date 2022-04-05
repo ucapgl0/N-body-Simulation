@@ -23,8 +23,7 @@ int main(int argc, char* argv[]) {
     app.add_option("-t,--LengthOfTime", time_length,  "input the total time of simulation");
     app.add_option("-n,--SetNumThreads", threads, "input the number of threads");
     CLI11_PARSE(app, argc, argv);
-    
-    //benchmark 2000 plants system simulation  
+      
     int n = 2000;
     nbsim::RandomSystem random_system(n);
     random_system.generator();
@@ -32,15 +31,16 @@ int main(int argc, char* argv[]) {
     // Calculate the initial kinetic energy and potential energy
     random_system.calculateEnergy_Openmp(threads);
 
-
+    // Benchmark 2000 plants system simulation
     std::clock_t c_start = std::clock();
     auto t_start = std::chrono::high_resolution_clock::now();
 
     random_system.attraction();
 
-    // Implement the evolution of the random system with time
+    // Implement the evolution of the random system with time using openMP
     random_system.evolution_Openmp(time_length, step_size, threads);
 
+    // Calculate energy using openMP
     random_system.calculateEnergy_Openmp(threads);
 
     std::clock_t c_end = std::clock();
